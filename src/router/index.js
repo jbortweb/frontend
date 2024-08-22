@@ -8,7 +8,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: { name: 'login' }
+      name: 'home',
+      component: HomeView
     },
     {
       path: '/admin',
@@ -108,7 +109,7 @@ router.beforeEach( async (to, from, next) => {
   const requiresAuth = to.matched.some(url => url.meta.requiresAuth)
   if(requiresAuth) {
     try {
-      const { data } =  await AuthAPI.auth()
+      const { data } =  await authAPI.auth()
       if(data.admin) {
         next({name: 'admin'})
       } else {
@@ -126,7 +127,7 @@ router.beforeEach( async (to, from, next) => {
 const requiresAdmin = to.matched.some(url => url.meta.requiresAdmin)
 if(requiresAdmin) {
   try {
-    await AuthAPI.admin()
+    await authAPI.admin()
     next()
   } catch (error) {
     next({name: 'login'})
