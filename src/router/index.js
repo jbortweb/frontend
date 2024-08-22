@@ -112,7 +112,7 @@ router.beforeEach(async (to, from, next) => {
       const {data} = await authAPI.auth()
 
       if(data.admin){
-        next('/admin')
+        next({name:'admin'})
       }else {
         next()
       }
