@@ -8,8 +8,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      redirect: { name: 'login' }
     },
     {
       path: '/admin',
@@ -105,37 +104,37 @@ const router = createRouter({
 })
 
 // Proteger rutas autentificadas
-router.beforeEach( async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(url => url.meta.requiresAuth)
-  if(requiresAuth) {
+  if (requiresAuth) {
     try {
-      const { data } =  await authAPI.auth()
-      if(data.admin) {
+      const {data} = await authAPI.auth()
+
+      if(data.admin){
         next({name: 'admin'})
-      } else {
+      }else {
         next()
       }
     } catch (error) {
-      next({name: 'login'})
+      next({ name: 'login' })
     }
   } else {
     next()
   }
 })
 
-router.beforeEach( async (to, from, next) => {
-const requiresAdmin = to.matched.some(url => url.meta.requiresAdmin)
-if(requiresAdmin) {
-  try {
-    await authAPI.admin()
+router.beforeEach(async (to, from, next) => {
+  const requiresAdmin = to.matched.some(url => url.meta.requiresAdmin)
+  if (requiresAdmin) {
+    try {
+      await authAPI.admin()
+      next()
+    } catch (error) {
+      next({ name: 'login' })
+    }
+  } else {
     next()
-  } catch (error) {
-    next({name: 'login'})
   }
-} else {
-  next()
-}
-
 })
 
 
