@@ -1,9 +1,8 @@
 <script setup>
 import authAPI from '@/api/authAPI'
-import { useToast } from 'vue-toast-notification';
 import { useRouter } from 'vue-router';
 
-const toast = useToast()
+const toast = inject('toast')
 
 const router = useRouter()
 
