@@ -1,5 +1,6 @@
 <script setup>
 import authAPI from '@/api/authAPI'
+import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 
 const toast = inject('toast')
